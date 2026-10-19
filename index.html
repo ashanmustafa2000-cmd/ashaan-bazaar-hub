@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashaan Bazaar Hub</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f6f3fb;color:#24133d}
+header{background:#38116b;color:white;padding:22px 16px;text-align:center}
+header h1{margin:0;font-size:25px}
+header p{margin:8px 0 0}
+main{max-width:850px;margin:auto;padding:18px}
+.search{width:100%;padding:13px;border:1px solid #ccc;border-radius:10px;font-size:16px}
+h2{margin-top:24px}
+.categories{display:flex;gap:8px;flex-wrap:wrap}
+.categories button,.primary{border:0;border-radius:9px;padding:11px 15px;background:#6c35a2;color:white;cursor:pointer}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-top:15px}
+.card{background:white;padding:15px;border-radius:12px;box-shadow:0 2px 8px #ddd}
+.pic{font-size:42px;text-align:center;background:#f0e6fa;padding:20px;border-radius:10px}
+.card h3{margin-bottom:6px}
+.price{color:#55228a;font-weight:bold}
+form{background:white;padding:16px;border-radius:12px;margin-top:25px}
+form input,form textarea{display:block;width:100%;padding:12px;margin:10px 0;border:1px solid #ccc;border-radius:8px;font-size:15px}
+footer{text-align:center;padding:25px;color:#666}
+</style>
+</head>
+<body>
+<header>
+<h1>Ashaan Bazaar Hub</h1>
+<p>Buy • Sell • Discover</p>
+</header>
+<main>
+<input id="search" class="search" placeholder="Search products..." oninput="render()">
+<h2>Browse Categories</h2>
+<div class="categories">
+<button onclick="category='All';render()">All</button>
+<button onclick="category='Electronics';render()">Electronics</button>
+<button onclick="category='Clothing';render()">Clothing</button>
+<button onclick="category='Home';render()">Home</button>
+<button onclick="category='Other';render()">Other</button>
+</div>
+<h2>Marketplace Products</h2>
+<div id="products" class="products"></div>
+<h2>Sell a Product</h2>
+<form id="productForm">
+<input id="name" placeholder="Product name" required>
+<input id="price" placeholder="Price (e.g. 10 Pi or Rs. 500)" required>
+<select id="cat" style="width:100%;padding:12px;border-radius:8px">
+<option>Electronics</option><option>Clothing</option><option>Home</option><option>Other</option>
+</select>
+<textarea id="desc" placeholder="Product description" required></textarea>
+<button class="primary" type="submit">Add Product</button>
+</form>
+<p id="message"></p>
+</main>
+<footer>Ashaan Bazaar Hub • Community Marketplace</footer>
+<script>
+let category='All';
+let items=[
+{name:'Mobile Phone',price:'Price negotiable',cat:'Electronics',desc:'Example listing',emoji:'📱'},
+{name:'Clothing',price:'Price negotiable',cat:'Clothing',desc:'Example listing',emoji:'👕'},
+{name:'Home Item',price:'Price negotiable',cat:'Home',desc:'Example listing',emoji:'🏠'}
+];
+function render(){
+let q=document.getElementById('search').value.toLowerCase();
+let shown=items.filter(x=>(category==='All'||x.cat===category)&&(x.name+' '+x.desc+' '+x.cat).toLowerCase().includes(q));
+document.getElementById('products').innerHTML=shown.map(x=>`<div class="card"><div class="pic">${x.emoji||'🛍️'}</div><h3>${escapeText(x.name)}</h3><div class="price">${escapeText(x.price)}</div><p>${escapeText(x.desc)}</p><small>${escapeText(x.cat)}</small></div>`).join('')||'<p>No products found.</p>';
+}
+function escapeText(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+document.getElementById('productForm').addEventListener('submit',function(e){
+e.preventDefault();
+items.unshift({name:document.getElementById('name').value,price:document.getElementById('price').value,cat:document.getElementById('cat').value,desc:document.getElementById('desc').value,emoji:'🛍️'});
+render();
+this.reset();
+document.getElementById('message').textContent='Product added to this page. It is not yet saved to a shared online marketplace.';
+});
+render();
+</script>
+</body>
+</html>
