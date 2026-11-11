@@ -183,6 +183,32 @@ document.getElementById('productForm').addEventListener('submit',function(e){
 });
 
 render();
+  async function loadProductsFromSupabase() {
+  const { data, error } = await supabaseClient
+    .from('products')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Supabase error:', error);
+    return;
+  }
+
+  if (data) {
+    items = data.map(p => ({
+      name: p.name,
+      price: p.price || 'Price negotiable',
+      cat: p.category || 'Other',
+      desc: p.description || '',
+      phone: p.phone || '',
+      emoji: '🛍️'
+    }));
+
+    render();
+  }
+}
+
+loadProductsFromSupabase();
 </script>
 <button id="pi-login">Login with Pi</button>
 
