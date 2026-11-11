@@ -213,14 +213,16 @@ loadProductsFromSupabase();
 <button id="pi-login">Login with Pi</button>
 
 <script>
-document.getElementById("pi-login").onclick = function () {
-  Pi.authenticate(
-    ["username", "payments"],
-    function (auth) {
-      alert("Welcome " + auth.user.username);
-    }
-  );
+
+document.getElementById("pi-login").onclick = async function () {
+  try {
+    const auth = await Pi.authenticate(["username"]);
+    alert("Welcome " + auth.user.username);
+  } catch (error) {
+    alert("Login failed: " + error.message);
+  }
 };
+
 </script>
 </body>
 </html>
