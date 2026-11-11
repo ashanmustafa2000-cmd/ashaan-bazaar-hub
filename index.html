@@ -34,9 +34,18 @@ form input,form textarea,form select{display:block;width:100%;padding:12px;margi
 #message{line-height:1.5}
 footer{text-align:center;padding:25px;color:#666}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 <script>
   Pi.init({ version: "2.0", sandbox: true });
+</script>
+<script>
+const SUPABASE_URL = "https://llwceliprulowghxvmsf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_ltaNA7nnVozoSCOcZIjg";
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 </script>
 </head>
 <body>
